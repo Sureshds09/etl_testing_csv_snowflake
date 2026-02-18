@@ -1,0 +1,9 @@
+
+snowflake:
+  user : SURESH
+  password : SobOblSuri#357
+  account : tnzvowr-gv19289
+  warehouse : COMPUTE_WH
+  database : SNOWFLAKE_SAMPLE_DATA
+  schema : TPCH_SF100
+  role : ACCOUNTADMIN

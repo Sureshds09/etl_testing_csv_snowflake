@@ -1,0 +1,13 @@
+pytest
+pandas
+snowflake-connector-python
+PyYAML
+sqlalchemy
+pathlib
+pytest-dependency
+openpyxl
+logger
+logging
+
+
+# pip install -r requirements.txt
