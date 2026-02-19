@@ -1,0 +1,30 @@
+name: ETL CSV Snowflake Validation
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # Daily at 8:30 AM IST
+  workflow_dispatch:
+
+jobs:
+  etl_validation_job:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run ETL Pytest Validation
+      run: |
+        pytest -v tests/
