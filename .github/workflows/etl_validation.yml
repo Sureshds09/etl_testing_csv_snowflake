@@ -1,7 +1,7 @@
 name: ETL CSV to Snowflake Validation
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # manual run only for now
 
 jobs:
   etl_test_job:
@@ -16,16 +16,12 @@ jobs:
       SF_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-      - name: Run ETL Pytest
-        run: pytest tests/test_migration_etl_validation.py -v
+      - run: pytest tests/test_migration_etl_validation.py -v

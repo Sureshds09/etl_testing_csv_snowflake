@@ -1,7 +1,7 @@
 import snowflake.connector
 import pandas as pd
 import os
-import snowflake.connector
+
 
 def source_csv():
     df = pd.read_csv(r"./data/customer.csv",nrows= 1009)
