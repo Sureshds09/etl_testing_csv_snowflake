@@ -1,27 +1,35 @@
 name: ETL CSV to Snowflake Validation
 
 on:
-  workflow_dispatch:   # manual run only for now
+  workflow_dispatch:
 
 jobs:
   etl_test_job:
     runs-on: ubuntu-latest
 
-    env:
-      SF_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SF_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      SF_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-      SF_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-      SF_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
-      SF_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
-
     steps:
-      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - run: pip install -r requirements.txt
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
 
-      - run: pytest tests/test_migration_etl_validation.py -v
+      - name: Run ETL Pytest
+        env:
+          SF_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SF_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SF_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SF_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SF_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          SF_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+        run: |
+          echo "SF_USER present?"
+          if [ -z "$SF_USER" ]; then echo "SF_USER is EMPTY"; else echo "SF_USER is SET"; fi
+          pytest tests/test_migration_etl_validation.py -v
