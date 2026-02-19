@@ -1,27 +1,25 @@
 import snowflake.connector
 import pandas as pd
-import yaml
-from pathlib import Path
+import os
+import snowflake.connector
 
 def source_csv():
     df = pd.read_csv(r"./data/customer.csv",nrows= 1009)
     return df
 
 
+
 def snowflake_conn():
 
-    config_path = Path(__file__).resolve().parent / "config.yaml"
-
-    with open(config_path) as f:
-        config = yaml.safe_load(f)
-
     conn = snowflake.connector.connect(
-        user=config['snowflake']['user'],
-        password=config['snowflake']['password'],
-        account=config['snowflake']['account'],
-        warehouse=config['snowflake']['warehouse'],
-        database=config['snowflake']['database'],
-        schema=config['snowflake']['schema'],
-        role=config['snowflake']['role']
+        user=os.environ['SF_USER'],
+        password=os.environ['SF_PASSWORD'],
+        account=os.environ['SF_ACCOUNT'],
+        warehouse=os.environ['SF_WAREHOUSE'],
+        database=os.environ['SF_DATABASE'],
+        schema=os.environ['SF_SCHEMA']
     )
+
     return conn
+
+
