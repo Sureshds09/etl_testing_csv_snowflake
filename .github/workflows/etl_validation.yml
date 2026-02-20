@@ -33,12 +33,14 @@ jobs:
           pytest tests/test_migration_etl_validation.py -v
 
       - name: Upload Logs
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ETL_Logs
           path: logs/
 
       - name: Upload Reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ETL_Reports
