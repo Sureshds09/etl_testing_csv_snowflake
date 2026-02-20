@@ -4,7 +4,7 @@ import os
 
 
 def source_csv():
-    df = pd.read_csv(r"./data/customer.csv", nrows=1009)
+    df = pd.read_csv(r"./data/customer.csv")
     return df
 
 
