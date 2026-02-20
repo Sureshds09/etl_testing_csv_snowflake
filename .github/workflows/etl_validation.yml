@@ -30,6 +30,16 @@ jobs:
           SF_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
           SF_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
         run: |
-          echo "SF_USER present?"
-          if [ -z "$SF_USER" ]; then echo "SF_USER is EMPTY"; else echo "SF_USER is SET"; fi
           pytest tests/test_migration_etl_validation.py -v
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: ETL_Logs
+          path: logs/
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: ETL_Reports
+          path: reports/
