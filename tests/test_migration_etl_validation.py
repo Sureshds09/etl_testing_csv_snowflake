@@ -224,6 +224,21 @@ def test_extra_in_target(request, src, tgt):
 
     assert extra.shape[0] == 0
 
+# ================= DUPLICATES IN SOURCE =================
+@pytest.mark.src_duplicate_val
+def test_source_duplicates(request, src):
+
+    logger.info("******** SOURCE DUPLICATE VALIDATION ********")
+
+    dup = src[src.duplicated(subset=['C_CUSTKEY'], keep=False)]
+
+    logger.info(f"DUPLICATE COUNT : {dup.shape[0]}")
+
+    request.node.failed_records = dup
+    request.node.fail_type = "Duplicate in Source"
+
+    assert dup.shape[0] == 0
+
 
 
 # ================= DATA MATCH =================
