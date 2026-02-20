@@ -193,22 +193,21 @@ def test_business_rule(src):
 
 
 # ================= MISSING =================
+# ================= MISSING =================
 @pytest.mark.missing_tgt_val
 def test_missing_in_target(request, src, tgt):
 
     logger.info("******** MISSING RECORD VALIDATION ********")
 
-    missing = src.merge(tgt, how='left', indicator=True)\
-                 .query("_merge=='left_only'")\
-                 .drop(columns=['_merge'])
+    missing = src[~src['C_CUSTKEY'].isin(tgt['C_CUSTKEY'])]
 
     logger.info(f"MISSING COUNT : {missing.shape[0]}")
 
-    # 👇 Attach failed records to pytest runtime
     request.node.failed_records = missing
     request.node.fail_type = "Missing in Target"
 
     assert missing.shape[0] == 0
+
 
 # ================= EXTRA =================
 @pytest.mark.extra_in_tgt_val
@@ -216,9 +215,7 @@ def test_extra_in_target(request, src, tgt):
 
     logger.info("******** EXTRA RECORD VALIDATION ********")
 
-    extra = tgt.merge(src, how='left', indicator=True)\
-               .query("_merge=='left_only'")\
-               .drop(columns=['_merge'])
+    extra = tgt[~tgt['C_CUSTKEY'].isin(src['C_CUSTKEY'])]
 
     logger.info(f"EXTRA COUNT : {extra.shape[0]}")
 
@@ -226,6 +223,7 @@ def test_extra_in_target(request, src, tgt):
     request.node.fail_type = "Extra in Target"
 
     assert extra.shape[0] == 0
+
 
 
 # ================= DATA MATCH =================
@@ -254,9 +252,3 @@ def test_data_comparison(request, src, tgt):
         request.node.fail_type = "Data Mismatch"
 
         pytest.fail("Data Mismatch Found")
-
-
-
-
-
-
