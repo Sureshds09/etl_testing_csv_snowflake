@@ -24,7 +24,7 @@ def src():
 
 
     # Sort using Business Key
-    df = df.sort_values(by='C_CUSTKEY')
+    df = df.sort_values(by='C_CUSTKEY').head(1009)
 
     yield df
 
