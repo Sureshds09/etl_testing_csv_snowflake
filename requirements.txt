@@ -8,6 +8,7 @@ pytest-dependency
 openpyxl
 logger
 logging
+gdf
 
 
 # pip install -r requirements.txt
